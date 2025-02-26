@@ -1,8 +1,8 @@
 import requests
 import json
-from server import Server
+from pyoauthbridge.server import Server
 from threading import Thread 
-from wsclient import socket_connect, get_compact_marketdata, get_detailed_marketdata, get_snapquotedata, send_message, get_ws_connection_status, unsubscribe_update, get_order_update, get_multiple_detailed_marketdata, get_multiple_compact_marketdata, get_multiple_snapquotedata
+from pyoauthbridge.wsclient import socket_connect, get_compact_marketdata, get_detailed_marketdata, get_snapquotedata, send_message, get_ws_connection_status, unsubscribe_update, get_order_update, get_multiple_detailed_marketdata, get_multiple_compact_marketdata, get_multiple_snapquotedata
 import sys
 import time
 
@@ -17,9 +17,9 @@ class Connect:
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_url = redirect_url
-        redirect_url_split = redirect_url.split(":")
-        if (int(redirect_url_split[2])) :
-            self.port = int(redirect_url_split[2])
+        redirect_url_split = self.redirect_url.rstrip('/').split(':')
+        if len(redirect_url_split) > 2:
+            port = int(redirect_url_split[2])  # Now this should work without error
         url = ""
         if "https" in base_url:
             url = base_url.replace("https", "wss")
